@@ -1,7 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
-import { generateSlug } from 'src/utils/generate-slug';
 import { returnReviewObject } from './return-review.object';
 import { ReviewDto } from './review.dto';
 
@@ -42,5 +40,16 @@ export class ReviewService {
         id: id,
       },
     });
+  }
+
+  async getAverageValueByProductId(productId: number) {
+    return await this.prisma.review.aggregate({
+      where: {
+        productId
+      },
+      _avg: {
+        rating: true
+      }
+    }).then(data => data._avg)
   }
 }
