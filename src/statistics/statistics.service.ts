@@ -9,23 +9,20 @@ export class StatisticsService {
     private userService: UserService,
   ) {}
 
+  //  PLEASE DONT USE IN PRODUCTION
   async getMain(userId: number) {
     const user = await this.userService.byId(userId, {
       orders: {
         select: {
-          items: true,
+          items: {
+            select: {
+              price: true,
+            }
+          }
         },
       },
       reviews: true,
     });
-
-    const totalAmount = await this.prisma.order.aggregate({
-      where: {
-        userId,
-      },
-    });
-
-    
 
     return [
       {

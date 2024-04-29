@@ -11,7 +11,6 @@ const createProducts = async (quantity: number) => {
   for (let i = 0; i < quantity; i++) {
     const productName = faker.commerce.productName();
     const categoryName = faker.commerce.department();
-    
     const product = await prisma.product.create({
       data: {
         name: productName,
